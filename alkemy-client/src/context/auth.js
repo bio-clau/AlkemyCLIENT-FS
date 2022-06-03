@@ -1,5 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux'
 import axios from 'axios';
+import {UPDATE_USER} from '../redux/actions/ctes'
 import {setToken, deleteToken, getToken} from '../helpers/authHelpers'
 
 const AuthContext = React.createContext();
@@ -9,7 +11,9 @@ export function useAuth() {
 };
 
 export function AuthProvider({children}) {
-    const [currentUser, setCurrentUser] = useState();
+    const dispatch = useDispatch()
+    const currentUser = useSelector((state) => state.user)
+    // const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
@@ -24,14 +28,15 @@ export function AuthProvider({children}) {
                         Authorization: `Bearer ${getToken()}`
                     }
                 })
-                setCurrentUser(data.data);
+                dispatch({type: UPDATE_USER, payload: data.data})
+                // setCurrentUser(data.data);
                 setLoading(false);
             } catch (err) {
                 deleteToken()
             }
         }
         loadUser()
-    }, [])
+    }, [dispatch])
 
     async function login(email, password) {
         try {
@@ -39,7 +44,8 @@ export function AuthProvider({children}) {
             email,
             password
         });
-        setCurrentUser(data.data);
+        dispatch({type: UPDATE_USER, payload: data.data})
+        // setCurrentUser(data.data);
         setToken(data.token)
         return true
         } catch (err) {
@@ -55,7 +61,8 @@ export function AuthProvider({children}) {
                 password,
                 image
             });
-            setCurrentUser(data.data);
+            dispatch({type: UPDATE_USER, payload: data.data})
+            // setCurrentUser(data.data);
             setToken(data.token);
             return true
         } catch (err) {
@@ -63,8 +70,11 @@ export function AuthProvider({children}) {
         }
     }
 
+
+
     function logout() {
-        setCurrentUser(null);
+        dispatch({type: UPDATE_USER, payload: null})
+        // setCurrentUser(null);
         deleteToken()
     }
     const value={

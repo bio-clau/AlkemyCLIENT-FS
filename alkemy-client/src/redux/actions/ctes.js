@@ -1,1 +1,8 @@
 export const ERROR = 'ERROR'
+export const MSG = 'MSG'
+export const UPDATE_USER = 'UPDATE_USER'
+export const GET_ALL_OP = 'GET_ALL_OP'
+export const DATA_CHART = 'DATA_CHART'
+export const ADD_OP = 'ADD_OP'
+export const DEL_OP = 'DEL_OP'
+export const UPDATE_OP = 'UPDATE_OP'

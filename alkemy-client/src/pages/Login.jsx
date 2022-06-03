@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {useNavigate} from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Container,
   Box,
@@ -16,10 +17,13 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Mail from '@mui/icons-material/Mail'
-
+import { Snackbar } from '@mui/material';
+import { SnackbarAlert } from '../middlewares/alert';
+import {setError, delError} from '../redux/actions/a.global';
 
 function Login() {
   const {login} = useAuth()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [values, setValues] = useState({
@@ -27,6 +31,7 @@ function Login() {
     password: '',
     showPassword: false,
   });
+  const error = useSelector((state)=>state.error)
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -43,11 +48,25 @@ function Login() {
     event.preventDefault();
   };
 
+  function handleClose() {
+    dispatch(delError())
+}
+
   async function handleSubmit(e){
     e.preventDefault();
     setLoading(true)
     const dir = await login(values.email, values.password);
-    navigate(`/${dir}`)
+    if(dir){
+      navigate('/profile')
+    } else {
+      dispatch(setError('Login Failed'));
+      setValues({
+        email: '',
+      password: '',
+      showPassword: false
+    })
+    setLoading(false)
+    }
   }
   return (
     <Container
@@ -119,6 +138,14 @@ function Login() {
       </LoadingButton>
       </Box>
       </Box>
+      <Snackbar open={!!error} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right'
+      }}>
+          <SnackbarAlert onClose={handleClose} color='error' variant='filled' severity='error'>
+              {error}
+          </SnackbarAlert>
+      </Snackbar>
     </Container>
   );
 }

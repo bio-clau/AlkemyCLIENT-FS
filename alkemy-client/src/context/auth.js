@@ -19,7 +19,7 @@ export function AuthProvider({children}) {
                 return;
             }
             try {
-                const {data} = await axios.get('/api/user/whoami',{
+                const {data} = await axios.get('http://localhost:4000/api/user/whoami',{
                     headers:{
                         Authorization: `Bearer ${getToken()}`
                     }
@@ -27,7 +27,7 @@ export function AuthProvider({children}) {
                 setCurrentUser(data.data);
                 setLoading(false);
             } catch (err) {
-                console.log(err)
+                deleteToken()
             }
         }
         loadUser()
@@ -41,20 +41,26 @@ export function AuthProvider({children}) {
         });
         setCurrentUser(data.data);
         setToken(data.token)
-        return 'profile'
+        return true
         } catch (err) {
-            return 'home'
+            return false
         }
     }
-    async function register (email, firstName, lastName, password) {
-        const {data} = await axios.post('/api/auth/register', {
-            email,
-            firstName,
-            lastName,
-            password
-        });
-        setCurrentUser(data.data);
-        setToken(data.token);
+    async function register (email, firstName, lastName, password, image) {
+        try {
+            const {data} = await axios.post('/api/auth/register', {
+                email,
+                firstName,
+                lastName,
+                password,
+                image
+            });
+            setCurrentUser(data.data);
+            setToken(data.token);
+            return true
+        } catch (err) {
+            return false
+        }
     }
 
     function logout() {

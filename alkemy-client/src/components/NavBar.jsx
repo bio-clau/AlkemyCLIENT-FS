@@ -27,24 +27,14 @@ function NavBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  function handleHome() {
-    navigate("/");
-  }
-  function handleLogin() {
-    navigate("/login");
-  }
-  function handleRegister() {
-    navigate("/register");
-  }
-  function handleRecords() {
-    navigate("/records");
-  }
-  function handleProfile() {
-    navigate("/Profile");
+  function handleGo(prop){
+    navigate(`/${prop}`)
+    setAnchorElNav(null)
   }
   function handleLogout() {
     logout();
-    navigate("/Home");
+    navigate("/");
+    setAnchorElNav(null)
   }
 
   return (
@@ -53,7 +43,7 @@ function NavBar() {
         <Toolbar sx={{ width: "100%" }} disableGutters>
           <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "start" }}>
             <Button>
-              <AccountBalanceIcon onClick={handleHome} color="white" />
+              <AccountBalanceIcon onClick={()=>handleGo('')} color="white" />
             </Button>
           </Box>
           <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "end" }}>
@@ -65,7 +55,7 @@ function NavBar() {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <Avatar alt="user" src={currentUser.image && 'https://res.cloudinary.com/tropura/image/upload/v1653866106/guest-user_je8e9t.jpg'} />
+              <Avatar alt="user" src={currentUser?.image ? currentUser.image : 'https://res.cloudinary.com/tropura/image/upload/v1653866106/guest-user_je8e9t.jpg'} />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -83,30 +73,30 @@ function NavBar() {
               onClose={handleCloseNavMenu}
             >
               {!currentUser && [
-              <MenuItem>
-                <Typography onClick={handleHome} textAlign="center">
+              <MenuItem key='home'>
+                <Typography onClick={()=>handleGo('')} textAlign="center">
                   Home
                 </Typography>
               </MenuItem>,
                 <MenuItem key="login">
-                  <Typography onClick={handleLogin} textAlign="center">
+                  <Typography onClick={()=>handleGo('login')} textAlign="center">
                     Login
                   </Typography>
                 </MenuItem>,
                 <MenuItem key="register">
-                  <Typography onClick={handleRegister} textAlign="center">
+                  <Typography onClick={()=>handleGo('register')} textAlign="center">
                     Register
                   </Typography>
                 </MenuItem>,
               ]}
               {currentUser && [
                 <MenuItem key="profile">
-                  <Typography onClick={handleProfile} textAlign="center">
+                  <Typography onClick={()=>handleGo('profile')} textAlign="center">
                     Profile
                   </Typography>
                 </MenuItem>,
                 <MenuItem key="records">
-                  <Typography onClick={handleRecords} textAlign="center">
+                  <Typography onClick={()=>handleGo('redords')} textAlign="center">
                     Records
                   </Typography>
                 </MenuItem>,

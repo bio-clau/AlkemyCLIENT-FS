@@ -4,7 +4,8 @@ import { AuthProvider } from "./context/auth";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NavBar from "./components/NavBar";
-import Profile from './pages/Profile'
+import Profile from './pages/Profile';
+import Register from './pages/Register'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

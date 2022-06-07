@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth";
 import { useSelector, useDispatch } from "react-redux";
 import { Snackbar } from "@mui/material";
@@ -7,6 +7,7 @@ import {
   delError,
   delMessage,
 } from "../../redux/actions/a.global";
+import {whoami} from '../../redux/actions/a.user'
 import ChangePass from './modals/ChangePass';
 import EditInfo from './modals/EditInfo';
 
@@ -26,6 +27,10 @@ function UserInfo() {
   const { currentUser} = useAuth();
   const [openPass, setOpenPass] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+
+  useEffect(()=>{
+    dispatch(whoami(localStorage.getItem('USER_TOKEN')))
+  },[dispatch])
 
   function handleClosePass() {
     setOpenPass(false);
@@ -98,6 +103,21 @@ function UserInfo() {
                 py={2}
                 pr={2}
               >{`${currentUser?.email}`}</Typography>
+            </Box>
+            <Box display="flex" alignItems="center">
+              <Typography
+                variant="h5"
+                fontWeight="bold"
+                color="primary.main"
+                p={2}
+              >{`YOUR TOTAL AMOUNT:`}</Typography>
+              <Typography
+                variant="h5"
+                fontWeight="bold"
+                color="primary.main"
+                py={2}
+                pr={2}
+              >{`$${currentUser?.total}`}</Typography>
             </Box>
             <Box
               display="flex"

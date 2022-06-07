@@ -72,7 +72,7 @@ function NavBar() {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
             >
-              {!currentUser && [
+              {!currentUser?.id && [
               <MenuItem key='home'>
                 <Typography onClick={()=>handleGo('')} textAlign="center">
                   Home
@@ -89,14 +89,14 @@ function NavBar() {
                   </Typography>
                 </MenuItem>,
               ]}
-              {currentUser && [
+              {currentUser?.id && [
                 <MenuItem key="profile">
                   <Typography onClick={()=>handleGo('profile')} textAlign="center">
                     Profile
                   </Typography>
                 </MenuItem>,
                 <MenuItem key="records">
-                  <Typography onClick={()=>handleGo('redords')} textAlign="center">
+                  <Typography onClick={()=>handleGo('records')} textAlign="center">
                     Records
                   </Typography>
                 </MenuItem>,

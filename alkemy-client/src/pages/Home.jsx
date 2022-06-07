@@ -1,9 +1,17 @@
 import React from 'react'
+import {useSelector, useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom'
-import {Container, Box, Typography, Button, Stack} from '@mui/material'
+import {Container, Box, Typography, Button, Stack, Snackbar} from '@mui/material';
+import {SnackbarAlert} from '../middlewares/alert';
+import {delError} from '../redux/actions/a.global'
 
 function Home() {
+  const error = useSelector(state => state.error)
+  const dispatch = useDispatch();
   const navigate = useNavigate()
+  function handleCloseAlert(){
+    dispatch(delError())
+  }
   function handleLogin(){
     navigate('/login')
   }
@@ -36,7 +44,14 @@ function Home() {
         </Button>
         </Stack>
       </Box>
-
+      <Snackbar open={!!error} autoHideDuration={3000} onClose={handleCloseAlert} anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right'
+      }}>
+          <SnackbarAlert onClose={handleCloseAlert} color='error' variant='filled' severity='error'>
+              {error}
+          </SnackbarAlert>
+      </Snackbar>
     </Container>
   )
 }

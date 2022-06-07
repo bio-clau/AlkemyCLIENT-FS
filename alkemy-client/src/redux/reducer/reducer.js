@@ -1,4 +1,4 @@
-import {ERROR, MSG, UPDATE_USER, GET_ALL_OP, DATA_CHART} from '../actions/ctes'
+import {ERROR, MSG, UPDATE_USER, GET_ALL_OP, DATA_CHART, ADD_OP, DEL_OP, UPDATE_OP} from '../actions/ctes'
 
 const initialState = {
     allOp:[],
@@ -33,6 +33,21 @@ export default function rootReducer(state = initialState, action) {
         return {
             ...state,
             dataChart: action.payload
+        }
+        case ADD_OP:
+        return {
+            ...state,
+            allOp:  action.payload
+        }
+        case DEL_OP:
+        return {
+            ...state,
+            allOp: state.allOp.filter(o=> o.id !== action.payload)
+        }
+        case UPDATE_OP:
+        return {
+            ...state,
+            allOp: action.payload
         }
         default:
             return {

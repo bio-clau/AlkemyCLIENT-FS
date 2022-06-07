@@ -1,4 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
+
 import {useSelector, useDispatch} from 'react-redux'
 import axios from 'axios';
 import {UPDATE_USER} from '../redux/actions/ctes'
@@ -32,7 +33,9 @@ export function AuthProvider({children}) {
                 // setCurrentUser(data.data);
                 setLoading(false);
             } catch (err) {
+                dispatch({type: UPDATE_USER, payload: null})
                 deleteToken()
+                setLoading(false);
             }
         }
         loadUser()

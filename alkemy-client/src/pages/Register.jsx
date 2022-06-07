@@ -61,7 +61,6 @@ function Register() {
   }
 
   const handleChange = (prop) => (event) => {
-    console.log('aca entro');
     if((prop === 'firstName' || prop === 'lastName') && /\d/gi.test(event.target.value)){
       setErrors({...errors, [prop]:'Can not have numbers'})
     } else {

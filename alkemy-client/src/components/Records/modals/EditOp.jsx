@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {useDispatch} from 'react-redux';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   Modal,
   Fade,
@@ -10,46 +10,56 @@ import {
   OutlinedInput,
   Backdrop,
   Select,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 
-import {updateOp} from '../../../redux/actions/a.operations';
+import { updateOp } from "../../../redux/actions/a.operations";
 
 const style = {
   position: "absolute",
   top: "30%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: { xs: 250, sm: 400 },
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
 };
 
-function EditOp({open, handleClose, id, concept, category}) {
-    const [values, setValues] = useState({concept:concept, category:category})
-    const [loading, setLoading] = useState(false)
-    const dispatch = useDispatch()
+function EditOp({ open, handleClose, id, concept, category }) {
+  const [values, setValues] = useState({
+    concept: concept,
+    category: category,
+  });
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
-    function handleChange(e, prop){
-        setValues ({...values, [prop]:e.target.value})
-    }
+  function handleChange(e, prop) {
+    setValues({ ...values, [prop]: e.target.value });
+  }
 
-    async function handleSubmit(e){
-        e.preventDefault()
-        setLoading(true)
-        await dispatch(updateOp(values.concept, values.category, id, localStorage.getItem('USER_TOKEN')))
-        setLoading(false)
-        handleClose('openEdit')
-    }
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+    await dispatch(
+      updateOp(
+        values.concept,
+        values.category,
+        id,
+        localStorage.getItem("USER_TOKEN")
+      )
+    );
+    setLoading(false);
+    handleClose("openEdit");
+  }
 
   return (
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       open={open}
-      onClose={()=>handleClose('openEdit')}
+      onClose={() => handleClose("openEdit")}
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
@@ -83,16 +93,13 @@ function EditOp({open, handleClose, id, concept, category}) {
               color="primary"
               required
             >
-              <InputLabel htmlFor="outlined-concept">
-                Concept
-              </InputLabel>
+              <InputLabel htmlFor="outlined-concept">Concept</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-firstName"
                 value={values.concept}
-                onChange={(e)=>handleChange(e, 'concept')}
+                onChange={(e) => handleChange(e, "concept")}
                 label="firstName"
               />
-
             </FormControl>
             <FormControl
               sx={{ m: 1, width: "25ch" }}
@@ -106,7 +113,7 @@ function EditOp({open, handleClose, id, concept, category}) {
                 id="outlined-category"
                 value={values.category}
                 label="Category"
-                onChange={(e)=>handleChange(e, 'category')}
+                onChange={(e) => handleChange(e, "category")}
               >
                 <MenuItem value="food">Food</MenuItem>
                 <MenuItem value="clothes">Clothes</MenuItem>

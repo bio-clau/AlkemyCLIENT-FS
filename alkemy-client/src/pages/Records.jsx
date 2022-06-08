@@ -1,31 +1,39 @@
-import React, {useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {useDispatch} from 'react-redux';
-import {useAuth} from '../context/auth';
-import {getAllOp} from '../redux/actions/a.operations';
-import {Container} from '@mui/material'
-import Display from '../components/Records/Display';
-import Add from '../components/Records/Add';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useAuth } from "../context/auth";
+import { getAllOp } from "../redux/actions/a.operations";
+import { Container } from "@mui/material";
+import Display from "../components/Records/Display";
+import Add from "../components/Records/Add";
 
 function Records() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {currentUser} = useAuth();
+  const { currentUser } = useAuth();
 
-  useEffect(()=>{
-    if(!currentUser){
-      navigate('/')
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/");
     } else {
-      dispatch(getAllOp(currentUser.id, localStorage.getItem('USER_TOKEN')))
+      dispatch(getAllOp(currentUser.id, localStorage.getItem("USER_TOKEN")));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  }, []);
   return (
-    <Container sx={{display:'flex', justifyContent:'space-around', padding:4}} maxWidth="xl">
-        <Display />
-        <Add/>
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", lg: "row" },
+        justifyContent: { md: "space-between", lg: "space-around" },
+        padding: 4,
+      }}
+      maxWidth="xl"
+    >
+      <Display />
+      <Add />
     </Container>
-  )
+  );
 }
 
-export default Records
+export default Records;

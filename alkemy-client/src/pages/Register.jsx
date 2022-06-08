@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {useAuth} from '../context/auth'
+import { useAuth } from "../context/auth";
 import {
   Container,
   Box,
@@ -15,7 +15,7 @@ import {
   Stack,
   Input,
 } from "@mui/material";
-import {FormHelperText} from '@mui/material';
+import { FormHelperText } from "@mui/material";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
@@ -28,8 +28,8 @@ import Person from "@mui/icons-material/Person";
 import { setError, delError } from "../redux/actions/a.global";
 
 function Register() {
-    const navigate = useNavigate()
-    const {register} = useAuth();
+  const navigate = useNavigate();
+  const { register } = useAuth();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
@@ -37,7 +37,7 @@ function Register() {
     lastName: "",
     email: "",
     password: "",
-    passwordConfirm: ""
+    passwordConfirm: "",
   });
   const [values, setValues] = useState({
     firstName: "",
@@ -61,20 +61,32 @@ function Register() {
   }
 
   const handleChange = (prop) => (event) => {
-    if((prop === 'firstName' || prop === 'lastName') && /\d/gi.test(event.target.value)){
-      setErrors({...errors, [prop]:'Can not have numbers'})
+    if (
+      (prop === "firstName" || prop === "lastName") &&
+      /\d/gi.test(event.target.value)
+    ) {
+      setErrors({ ...errors, [prop]: "Can not have numbers" });
     } else {
-      setErrors({...errors, [prop]:''})
+      setErrors({ ...errors, [prop]: "" });
     }
-    if(prop === 'email' && !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(event.target.value)){
-      setErrors({...errors, email:'Invalid email'})
+    if (
+      prop === "email" &&
+      !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(event.target.value)
+    ) {
+      setErrors({ ...errors, email: "Invalid email" });
     } else {
-      setErrors({...errors, email:''})
+      setErrors({ ...errors, email: "" });
     }
-    if((prop === 'password' || prop==='passwordConfirm') && !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(event.target.value)){
-      setErrors({...errors, [prop]:'Minimum eight characters, at least one letter and one number'})
+    if (
+      (prop === "password" || prop === "passwordConfirm") &&
+      !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(event.target.value)
+    ) {
+      setErrors({
+        ...errors,
+        [prop]: "Minimum eight characters, at least one letter and one number",
+      });
     } else {
-      setErrors({...errors, [prop]:''})
+      setErrors({ ...errors, [prop]: "" });
     }
     setValues({ ...values, [prop]: event.target.value });
   };
@@ -101,32 +113,42 @@ function Register() {
     dispatch(delError());
   }
 
-  async function handleSubmit(e){
+  async function handleSubmit(e) {
     e.preventDefault();
-    if(!values.firstName || !values.lastName || !values.email || !values.password) {
-        dispatch(setError('Complete required information'));
-    }else if(values.password===values.passwordConfirm){
-
-        setLoading(true)
-        const dir = await register(values.email,values.firstName, values.lastName, values.password, values.image);
-        if(dir){
-          navigate('/profile')
-        } else {
-          dispatch(setError('Register Failed'));
-          setValues({
-            firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        passwordConfirm: "",
-        image: "",
-        showPassword: false,
-        showPasswordConfirm: false,
-        })
-        setLoading(false)
-        }
+    if (
+      !values.firstName ||
+      !values.lastName ||
+      !values.email ||
+      !values.password
+    ) {
+      dispatch(setError("Complete required information"));
+    } else if (values.password === values.passwordConfirm) {
+      setLoading(true);
+      const dir = await register(
+        values.email,
+        values.firstName,
+        values.lastName,
+        values.password,
+        values.image
+      );
+      if (dir) {
+        navigate("/profile");
+      } else {
+        dispatch(setError("Register Failed"));
+        setValues({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          passwordConfirm: "",
+          image: "",
+          showPassword: false,
+          showPasswordConfirm: false,
+        });
+        setLoading(false);
+      }
     } else {
-        dispatch(setError('Passwords do not match'));
+      dispatch(setError("Passwords do not match"));
     }
   }
 
@@ -134,7 +156,6 @@ function Register() {
     <Container
       sx={{
         display: "flex",
-        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -159,24 +180,27 @@ function Register() {
         <Box
           sx={{
             display: "flex",
+            flexDirection: { xs: "column", md: "row" },
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Typography mr={4} fontWeight="bold" variant="h4">
+          <Typography mr={{ xs: 0, md: 4 }} fontWeight="bold" variant="h4">
             REGISTER
           </Typography>
           <AccountBalanceIcon fontSize="large" />
           <Box ml={4} component="form">
             <FormGroup>
               <FormControl
-                sx={{ m: 1, width: "25ch" }}
+                sx={{ m: 1, width: { xs: "20ch", sm: "25ch" } }}
                 variant="outlined"
                 color="primary"
                 required
-                
+              >
+                <InputLabel
+                  sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }}
+                  htmlFor="outlined-adornment-firstName"
                 >
-                <InputLabel htmlFor="outlined-adornment-firstName">
                   First Name
                 </InputLabel>
                 <OutlinedInput
@@ -191,19 +215,24 @@ function Register() {
                   }
                   label="firstName"
                 />
-                {errors.firstName && <FormHelperText error >{errors.firstName}</FormHelperText>}
+                {errors.firstName && (
+                  <FormHelperText error>{errors.firstName}</FormHelperText>
+                )}
               </FormControl>
               <FormControl
-                sx={{ m: 1, width: "25ch" }}
+                sx={{ m: 1, width: { xs: "20ch", sm: "25ch" } }}
                 variant="outlined"
                 color="primary"
                 required
               >
-                <InputLabel htmlFor="outlined-adornment-lastName">
+                <InputLabel
+                  sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }}
+                  htmlFor="outlined-adornment-lastName"
+                >
                   Last Name
                 </InputLabel>
                 <OutlinedInput
-                error={Boolean(errors.lastName)}
+                  error={Boolean(errors.lastName)}
                   id="outlined-adornment-lastName"
                   value={values.lastName}
                   onChange={handleChange("lastName")}
@@ -214,21 +243,26 @@ function Register() {
                   }
                   label="lastName"
                 />
-                {errors.lastName && <FormHelperText error >{errors.lastName}</FormHelperText>}
+                {errors.lastName && (
+                  <FormHelperText error>{errors.lastName}</FormHelperText>
+                )}
               </FormControl>
               <FormControl
-                sx={{ m: 1, width: "25ch" }}
+                sx={{ m: 1, width: { xs: "20ch", sm: "25ch" } }}
                 variant="outlined"
                 color="primary"
                 required
               >
-                <InputLabel htmlFor="outlined-adornment-email">
+                <InputLabel
+                  sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }}
+                  htmlFor="outlined-adornment-email"
+                >
                   Email
                 </InputLabel>
                 <OutlinedInput
-                error={Boolean(errors.email)}
+                  error={Boolean(errors.email)}
                   id="outlined-adornment-email"
-                  type='email'
+                  type="email"
                   value={values.email}
                   onChange={handleChange("email")}
                   endAdornment={
@@ -238,19 +272,24 @@ function Register() {
                   }
                   label="email"
                 />
-                {errors.email && <FormHelperText error >{errors.email}</FormHelperText>}
+                {errors.email && (
+                  <FormHelperText error>{errors.email}</FormHelperText>
+                )}
               </FormControl>
               <FormControl
-                sx={{ m: 1, width: "25ch" }}
+                sx={{ m: 1, width: { xs: "20ch", sm: "25ch" } }}
                 variant="outlined"
                 color="primary"
                 required
               >
-                <InputLabel htmlFor="outlined-adornment-password">
+                <InputLabel
+                  sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }}
+                  htmlFor="outlined-adornment-password"
+                >
                   Password
                 </InputLabel>
                 <OutlinedInput
-                error={Boolean(errors.password)}
+                  error={Boolean(errors.password)}
                   id="outlined-adornment-password"
                   type={values.showPassword ? "text" : "password"}
                   value={values.password}
@@ -259,8 +298,8 @@ function Register() {
                     <InputAdornment position="end">
                       <IconButton
                         aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
                         edge="end"
                       >
                         {values.showPassword ? (
@@ -273,19 +312,24 @@ function Register() {
                   }
                   label="Password"
                 />
-                {errors.password && <FormHelperText error >{errors.password}</FormHelperText>}
+                {errors.password && (
+                  <FormHelperText error>{errors.password}</FormHelperText>
+                )}
               </FormControl>
               <FormControl
-                sx={{ m: 1, width: "25ch" }}
+                sx={{ m: 1, width: { xs: "20ch", sm: "25ch" } }}
                 variant="outlined"
                 color="primary"
                 required
               >
-                <InputLabel htmlFor="outlined-adornment-passwordConfirm">
+                <InputLabel
+                  sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }}
+                  htmlFor="outlined-adornment-passwordConfirm"
+                >
                   Confirm Password
                 </InputLabel>
                 <OutlinedInput
-                error={Boolean(errors.passwordConfirm)}
+                  error={Boolean(errors.passwordConfirm)}
                   id="outlined-adornment-passwordConfirm"
                   type={values.showPasswordConfirm ? "text" : "password"}
                   value={values.passwordConfirm}
@@ -294,8 +338,8 @@ function Register() {
                     <InputAdornment position="end">
                       <IconButton
                         aria-label="toggle password visibility"
-                          onClick={handleClickShowPasswordConfirm}
-                          onMouseDown={handleMouseDownPassword}
+                        onClick={handleClickShowPasswordConfirm}
+                        onMouseDown={handleMouseDownPassword}
                         edge="end"
                       >
                         {values.showPasswordConfirm ? (
@@ -308,7 +352,11 @@ function Register() {
                   }
                   label="PasswordConfirm"
                 />
-                {errors.passwordConfirm && <FormHelperText error >{errors.passwordConfirm}</FormHelperText>}
+                {errors.passwordConfirm && (
+                  <FormHelperText error>
+                    {errors.passwordConfirm}
+                  </FormHelperText>
+                )}
               </FormControl>
               <FormControl>
                 <Stack direction="row" alignItems="center" spacing={2}>

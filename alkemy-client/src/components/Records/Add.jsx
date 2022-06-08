@@ -26,7 +26,7 @@ function Add() {
     amount: "",
     concept: "",
     category: "",
-    date:''
+    date: "",
   });
   const [values, setValues] = useState({
     type: "",
@@ -46,7 +46,7 @@ function Add() {
   }
 
   const handleChange = (prop) => (event) => {
-    console.log(event.target.value)
+    console.log(event.target.value);
     if (prop === "amount" && !/^[0-9]+$/.test(event.target.value)) {
       setErrors({ ...errors, amount: "Must only be numbers" });
     } else {
@@ -80,7 +80,7 @@ function Add() {
         type: "",
         concept: "",
         category: "",
-        date:''
+        date: "",
       });
     }
     setLoading(false);
@@ -92,6 +92,7 @@ function Add() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        padding: 0,
       }}
     >
       <Box
@@ -111,10 +112,10 @@ function Add() {
           flexDirection: "column",
         }}
       >
-        <Box ml={4} component="form">
+        <Box ml={{ xs: 0, sm: 4 }} component="form">
           <FormGroup>
             <FormControl
-              sx={{ m: 1, width: "25ch" }}
+              sx={{ m: 1, width: { xs: "20ch", sm: "25ch" } }}
               variant="outlined"
               color="primary"
               required
@@ -135,7 +136,7 @@ function Add() {
               )}
             </FormControl>
             <FormControl
-              sx={{ m: 1, width: "25ch" }}
+              sx={{ m: 1, width: { xs: "20ch", sm: "25ch" } }}
               variant="outlined"
               color="primary"
               required
@@ -153,7 +154,7 @@ function Add() {
               )}
             </FormControl>
             <FormControl
-              sx={{ m: 1, width: "25ch" }}
+              sx={{ m: 1, width: { xs: "20ch", sm: "25ch" } }}
               variant="outlined"
               color="primary"
               required
@@ -172,7 +173,7 @@ function Add() {
               )}
             </FormControl>
             <FormControl
-              sx={{ m: 1, width: "25ch" }}
+              sx={{ m: 1, width: { xs: "20ch", sm: "25ch" } }}
               variant="outlined"
               color="primary"
               required
@@ -182,7 +183,6 @@ function Add() {
                 label="Date"
                 type="date"
                 value={values.date}
-                sx={{ width: 220 }}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -190,7 +190,7 @@ function Add() {
               />
             </FormControl>
             <FormControl
-              sx={{ m: 1, width: "25ch" }}
+              sx={{ m: 1, width: { xs: "20ch", sm: "25ch" } }}
               variant="outlined"
               color="primary"
               required

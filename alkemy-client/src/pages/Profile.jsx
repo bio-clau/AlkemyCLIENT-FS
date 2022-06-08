@@ -1,14 +1,14 @@
-import React from 'react'
-import UserInfo from '../components/User/UserInfo';
-import UserStats from '../components/User/UserStats';
+import React from "react";
+import UserInfo from "../components/User/UserInfo";
+import UserStats from "../components/User/UserStats";
 
 function Profile() {
   return (
     <div>
-      <UserInfo/>
-      <UserStats/>
+      <UserInfo />
+      <UserStats />
     </div>
-  )
+  );
 }
 
-export default Profile
+export default Profile;
